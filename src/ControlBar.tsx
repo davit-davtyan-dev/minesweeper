@@ -1,12 +1,16 @@
-import React from "react";
 import {
   boardSettingsEasy,
   boardSettingsMedium,
-  boardSettingsHard
+  boardSettingsHard,
 } from "./helpers";
 import { BoardSettings } from "./types";
 
-const LinkItem: React.FC<{ onClick: () => void }> = (props) => (
+type LinkItemProps = {
+  onClick: () => void;
+  children: React.ReactNode;
+};
+
+const LinkItem = (props: LinkItemProps) => (
   <span
     style={{ color: "#337ab7", cursor: "pointer", marginTop: 4 }}
     onClick={props.onClick}
@@ -31,7 +35,7 @@ const ControlBar = (props: ControlBarProps) => {
         border: "1px solid gray",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
       }}
     >
       <button onClick={() => props.handleRestart()} disabled={!props.started}>
