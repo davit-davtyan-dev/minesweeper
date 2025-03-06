@@ -1,6 +1,6 @@
-import EmptyFlagIcon from "./icons/EmptyFlagIcon";
-import FlagIcon from "./icons/FlagIcon";
-import MineIcon from "./icons/MineIcon";
+import EmptyFlagIcon from "./assets/emptyFlag.svg?react";
+import FlagIcon from "./assets/flag.svg?react";
+import MineIcon from "../public/mine.svg?react";
 
 import type { Block } from "./types";
 
@@ -19,7 +19,7 @@ const BlockComponent = ({
   onDoubleClick,
   loosed,
   x,
-  y
+  y,
 }: BlockComponentProps) => {
   return (
     <div
@@ -34,7 +34,7 @@ const BlockComponent = ({
           : block.opened
           ? "white"
           : "darkGray",
-        textAlign: "center"
+        textAlign: "center",
       }}
       onClick={onClick}
       onDoubleClick={onDoubleClick}
