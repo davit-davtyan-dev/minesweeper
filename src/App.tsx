@@ -199,6 +199,7 @@ export default function App() {
                   onClick={() => handleBlockClick(x, y)}
                   onDoubleClick={() => handleBlockDoubleClick(x, y)}
                   loosed={loosed}
+                  won={won}
                   x={x}
                   y={y}
                 />

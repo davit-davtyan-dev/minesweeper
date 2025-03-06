@@ -9,18 +9,12 @@ type BlockComponentProps = {
   onClick: () => void;
   onDoubleClick: () => void;
   loosed: boolean;
+  won: boolean;
   x: number;
   y: number;
 };
 
-const BlockComponent = ({
-  block,
-  onClick,
-  onDoubleClick,
-  loosed,
-  x,
-  y,
-}: BlockComponentProps) => {
+const BlockComponent = (props: BlockComponentProps) => {
   return (
     <div
       style={{
@@ -29,33 +23,54 @@ const BlockComponent = ({
         height: 20,
         color: "black",
         userSelect: "none",
-        backgroundColor: block.blownUp
+        backgroundColor: props.block.blownUp
           ? "#c64641"
-          : block.opened
+          : props.block.opened
           ? "white"
           : "darkGray",
         textAlign: "center",
       }}
-      onClick={onClick}
-      onDoubleClick={onDoubleClick}
-      data-x={x}
-      data-y={y}
+      onClick={props.onClick}
+      onDoubleClick={props.onDoubleClick}
+      data-x={props.x}
+      data-y={props.y}
     >
-      {!block.opened && !block.flagged && !loosed ? (
-        ""
-      ) : block.flagged ? (
-        loosed && !block.mine ? (
-          <EmptyFlagIcon data-x={x} data-y={y} />
-        ) : (
-          <FlagIcon data-x={x} data-y={y} />
-        )
-      ) : block.mine ? (
-        <MineIcon data-x={x} data-y={y} />
-      ) : (
-        block.neighborMinesCount || ""
-      )}
+      <BlockContent {...props} />
     </div>
   );
 };
+
+type BlockContentProps = Omit<BlockComponentProps, "onClick" | "onDoubleClick">;
+
+function BlockContent({ block, loosed, won, x, y }: BlockContentProps) {
+  const isFinished = loosed || won;
+
+  const noContent = !block.flagged && !block.mine && !block.neighborMinesCount;
+
+  if (
+    (!block.flagged && !block.opened && (!isFinished || !block.mine)) ||
+    noContent
+  ) {
+    return null;
+  }
+
+  if (block.flagged && loosed && !block.mine) {
+    return <EmptyFlagIcon data-x={x} data-y={y} />;
+  }
+
+  if (won && block.mine && !block.flagged) {
+    return <FlagIcon data-x={x} data-y={y} opacity={0.3} />;
+  }
+
+  if (block.flagged) {
+    return <FlagIcon data-x={x} data-y={y} opacity={1} />;
+  }
+
+  if (block.mine && isFinished) {
+    return <MineIcon data-x={x} data-y={y} />;
+  }
+
+  return block.neighborMinesCount || null;
+}
 
 export default BlockComponent;
